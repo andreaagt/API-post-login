@@ -12,11 +12,26 @@ module.exports = {
     update,
     addMessage,
     findLessonMessage,
-    removeMessage
+    removeMessage,
+    addUsers,
+    findAllUsers,
+    findUserByUsername
 };
 
 // queries que puedo hacer
 // add, find, findById, remove
+
+async function addUsers(user) {
+    return await db('users').insert(user, ['id', 'username'])
+}
+
+async function findAllUsers() {
+    return db('users')
+}
+
+async function findUserByUsername(username) {
+    return db('users').where({ username }).first();
+}
 
 async function add(lesson) {
     return await db('lessons').insert(lesson, ['id', 'name'])
@@ -83,3 +98,4 @@ function removeMessage(id) {
     .where({ id })
     .del();
 }
+
