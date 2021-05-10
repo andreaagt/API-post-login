@@ -38,7 +38,6 @@ router.post('/login', (req, res) => {
   
   Lessons.findUserByUsername(username)
   .then(user => {
-    console.log(user)
     if (user && bcrypt.compareSync(password, user.password)){
 
       req.session.user = {
