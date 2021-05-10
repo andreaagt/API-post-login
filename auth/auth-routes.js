@@ -1,6 +1,7 @@
 const express = require('express');
-const Lessons = require("../models/dbHelperss");
-const bcrypt = require("bcrypt");
+const Lessons = require('../models/dbHelperss');
+const bcrypt = require('bcrypt');
+const generateToken = require('./generateToken');
 
 const router = express.Router();  
 
@@ -39,13 +40,9 @@ router.post('/login', (req, res) => {
   Lessons.findUserByUsername(username)
   .then(user => {
     if (user && bcrypt.compareSync(password, user.password)){
+      const token = generateToken(user)
 
-      req.session.user = {
-        id : user.id,
-        username: user.username,
-      }
-
-      res.status(200).json({ message: `Welcome ${user.username}!` })
+      res.status(200).json({ message: `Welcome ${user.username}!`, token })
     } else {
       res.status(401).json({ message: `Invalid credentials`})
     }
